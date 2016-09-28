@@ -1,3 +1,8 @@
+[![Travis](https://img.shields.io/travis/Mayank1791989/babel-preset-playlyfe.svg?style=flat-square)](https://travis-ci.org/Mayank1791989/babel-preset-playlyfe)
+[![Codecov](https://img.shields.io/codecov/c/github/Mayank1791989/babel-preset-playlyfe.svg?style=flat-square)](https://codecov.io/gh/Mayank1791989/babel-preset-playlyfe)
+[![npm](https://img.shields.io/npm/v/babel-preset-playlyfe.svg?style=flat-square)](https://www.npmjs.com/package/babel-preset-playlyfe)
+[![npm](https://img.shields.io/npm/dt/babel-preset-playlyfe.svg?style=flat-square)](https://www.npmjs.com/package/babel-preset-playlyfe)
+
 # babel-preset-playlyfe
 
 > Babel preset for Javascript(es2015, es2016) React projects.
