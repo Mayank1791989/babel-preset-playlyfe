@@ -1,0 +1,80 @@
+{
+  "name": "babel-preset-playlyfe",
+  "version": "0.0.0-auto-generate-by-semantic-release",
+  "description": "Babel preset for playlyfe",
+  "main": "lib/index.js",
+  "author": "mayank@playlyfe.com",
+  "contributors": [
+    "Kumar Harsh <khs@playlyfe.com> (https://github.com/kumarharsh)"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "babel-preset",
+    "react",
+    "es2015",
+    "playlyfe"
+  ],
+  "scripts": {
+    "test": "npm run check-code && npm run testonly -- --coverage",
+    "testonly": "cross-env NODE_ENV=test jest",
+    "check-code": "npm run lint && npm run flow",
+    "flow": "flow check",
+    "lint": "eslint src",
+    "report-coverage": "codecov",
+    "build": "babel ./src --out-dir ./lib --ignore '**/__tests__/**,**/node_modules/**'",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "commit": "git-cz"
+  },
+  "homepage": "https://github.com/Mayank1791989/babel-preset-playlyfe#readme",
+  "files": [
+    "lib",
+    "README.md"
+  ],
+  "dependencies": {
+    "babel-plugin-react-intl": "2.2.0",
+    "babel-plugin-syntax-trailing-function-commas": "6.13.0",
+    "babel-plugin-transform-class-properties": "6.11.5",
+    "babel-plugin-transform-decorators": "6.13.0",
+    "babel-plugin-transform-decorators-legacy": "1.3.4",
+    "babel-plugin-transform-export-extensions": "6.8.0",
+    "babel-plugin-transform-object-rest-spread": "6.8.0",
+    "babel-plugin-transform-proto-to-assign": "6.9.0",
+    "babel-plugin-transform-runtime": "6.15.0",
+    "babel-preset-es2015": "6.14.0",
+    "babel-preset-react": "6.11.1",
+    "modify-babel-preset": "3.1.0"
+  },
+  "devDependencies": {
+    "babel-cli": "6.14.0",
+    "babel-eslint": "6.1.2",
+    "babel-jest": "15.0.0",
+    "babel-plugin-syntax-flow": "6.13.0",
+    "babel-plugin-transform-flow-strip-types": "6.14.0",
+    "babel-polyfill": "6.13.0",
+    "babel-preset-stage-0": "6.5.0",
+    "babel-register": "6.14.0",
+    "codecov": "1.0.1",
+    "commitizen": "2.8.6",
+    "cross-env": "2.0.1",
+    "cz-conventional-changelog": "1.2.0",
+    "eslint": "3.5.0",
+    "eslint-config-airbnb-base": "7.1.0",
+    "flow-bin": "0.32.0",
+    "ghooks": "1.3.2",
+    "jest-cli": "15.1.1",
+    "react": "15.3.2",
+    "react-intl": "2.1.5",
+    "semantic-release": "4.3.5"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    },
+    "ghooks": {
+      "pre-commit": "npm run test"
+    }
+  },
+  "jest": {
+    "testRegex": "__tests__/.*-test.js$"
+  }
+}
