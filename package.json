@@ -7,6 +7,10 @@
   "contributors": [
     "Kumar Harsh <khs@playlyfe.com> (https://github.com/kumarharsh)"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mayank1791989/babel-preset-playlyfe.git"
+  },
   "license": "MIT",
   "keywords": [
     "babel-preset",
