@@ -1,6 +1,7 @@
 /* @flow */
-type Options = {
-  ie10: bool
+type Options = $Exact<{
+  ie10: bool,
+  flow: bool,
 };
 
 module.exports = (context: any, opts: Options) => ({
@@ -18,15 +19,17 @@ module.exports = (context: any, opts: Options) => ({
     require('babel-plugin-transform-decorators-legacy').default,
     require('babel-plugin-transform-decorators'),
 
-    // stage-3
     require('babel-plugin-syntax-trailing-function-commas'),
-    // stage-2
 
     require('babel-plugin-transform-class-properties'),
     require('babel-plugin-transform-object-rest-spread'),
-    // stage-1
+
     require('babel-plugin-transform-export-extensions'),
-    // stage-0
-    // nothing
+
+    // flow support
+    ...(opts.flow ? [
+      require('babel-plugin-transform-flow-strip-types'),
+      require('babel-plugin-syntax-flow'),
+    ] : []),
   ],
 });

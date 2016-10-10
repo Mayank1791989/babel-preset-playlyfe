@@ -74,6 +74,24 @@ testParseCode('Allow decorator', {
   `,
 });
 
+testParseCode('Default Flow Support is enabled', {
+  opts,
+  throws: false,
+  code: `
+    function test(test1: string, test2: number) {}
+  `,
+});
+
+// NOTE: if react is enabled flow can't be disabled
+// as react preset has no option to disable flow (see babel-preset-react)
+testParseCode('Can disable flow support', {
+  opts: [{ flow: false }],
+  throws: true,
+  code: `
+    function test(test1: string, test2: number) {}
+  `,
+});
+
 testExecCode('decorators should work with static properties', {
   opts,
   code: `

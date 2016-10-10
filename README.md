@@ -34,6 +34,7 @@ Note if 'babelRuntime'(see options below) is enabled then install 'babel-runtime
 * `react` - bool (default true) Enable react support.
 * `reactIntl` - bool (default true) Enable react-intl support.
 * `babelRuntime` - bool (default true) Enable [babel-plugin-transform-runtime plugin](https://babeljs.io/docs/plugins/transform-runtime).
+* `flow` - bool (default true) Enable flow support.
 
 ```
 // disable ie10 support
@@ -54,6 +55,13 @@ Note if 'babelRuntime'(see options below) is enabled then install 'babel-runtime
 {
   presets: [
     ["playlyfe", {"babelRuntime": false}]
+  ]
+}
+
+// disable flow support
+{
+  presets: [
+    ["playlyfe", {"flow": false}]
   ]
 }
 ```
