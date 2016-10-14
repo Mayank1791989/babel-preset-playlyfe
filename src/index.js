@@ -5,6 +5,7 @@ const DEFAULT_OPTS = {
   reactIntl: true,
   babelRuntime: true,
   flow: true,
+  asyncAwait: true,
 };
 
 type Options = ?$Exact<{
@@ -13,16 +14,20 @@ type Options = ?$Exact<{
   reactIntl?: bool,
   babelRuntime?: bool,
   flow?: bool,
+  asyncAwait?: bool,
 }>;
 
 module.exports = (context: any, opts: Options) => {
   validateOptions(opts || {}); // eslint-disable-line no-use-before-define
 
-  const { ie10, react, reactIntl, babelRuntime, flow } = { ...DEFAULT_OPTS, ...(opts || {}) };
+  const {
+    ie10, react, reactIntl,
+    babelRuntime, flow, asyncAwait,
+  } = { ...DEFAULT_OPTS, ...(opts || {}) };
 
   return {
     presets: [
-      [require('./presets/es'), { ie10, flow }],
+      [require('./presets/es'), { ie10, flow, asyncAwait }],
       react ? [require('./presets/react'), { reactIntl }] : null,
     ].filter(Boolean),
 

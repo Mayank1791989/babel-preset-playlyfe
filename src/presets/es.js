@@ -2,7 +2,8 @@
 type Options = $Exact<{
   ie10: bool,
   flow: bool,
-};
+  asyncAwait: bool,
+}>;
 
 module.exports = (context: any, opts: Options) => ({
   presets: [
@@ -20,6 +21,9 @@ module.exports = (context: any, opts: Options) => ({
     require('babel-plugin-transform-decorators'),
 
     require('babel-plugin-syntax-trailing-function-commas'),
+    // support for async await: convert async await to generator
+    // Note: need "regenerator" runtime
+    opts.asyncAwait ? require('babel-plugin-transform-async-to-generator') : null,
 
     require('babel-plugin-transform-class-properties'),
     require('babel-plugin-transform-object-rest-spread'),
@@ -31,5 +35,6 @@ module.exports = (context: any, opts: Options) => ({
       require('babel-plugin-transform-flow-strip-types'),
       require('babel-plugin-syntax-flow'),
     ] : []),
-  ],
+
+  ].filter(Boolean),
 });

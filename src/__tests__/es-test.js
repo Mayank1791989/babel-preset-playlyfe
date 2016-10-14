@@ -92,6 +92,40 @@ testParseCode('Can disable flow support', {
   `,
 });
 
+// supports async await
+testParseCode('Async await syntax support', {
+  opts,
+  throws: false,
+  code: `
+    async function test() {
+      const a = await test2();
+    }
+  `,
+});
+
+testExecCode('async await should work', {
+  opts,
+  code: `
+    const response = "test-request-response";
+
+    function testRequest() {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(response);
+        }, 10);
+      });
+    }
+
+    async function test() {
+      const _response = await testRequest();
+      expect(_response).toEqual(response);
+    }
+
+    // for async test
+    returnValue(test());
+  `,
+});
+
 testExecCode('decorators should work with static properties', {
   opts,
   code: `

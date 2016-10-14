@@ -35,6 +35,7 @@ Note if 'babelRuntime'(see options below) is enabled then install 'babel-runtime
 * `reactIntl` - bool (default true) Enable react-intl support.
 * `babelRuntime` - bool (default true) Enable [babel-plugin-transform-runtime plugin](https://babeljs.io/docs/plugins/transform-runtime).
 * `flow` - bool (default true) Enable flow support.
+* `asyncAwait` - bool (default true) Enable async-await support (Note: need [regeneratorRuntime](https://babeljs.io/docs/plugins/transform-regenerator)).
 
 ```
 // disable ie10 support
