@@ -30,39 +30,46 @@ Note if 'babelRuntime'(see options below) is enabled then install 'babel-runtime
 
 ## Options
 
-* `ie10` - bool (default true) Add support for ie10.
+* `ie10` - bool (default false) Add support for ie10.
 * `react` - bool (default true) Enable react support.
 * `reactIntl` - bool (default true) Enable react-intl support.
 * `babelRuntime` - bool (default true) Enable [babel-plugin-transform-runtime plugin](https://babeljs.io/docs/plugins/transform-runtime).
 * `flow` - bool (default true) Enable flow support.
-* `asyncAwait` - bool (default true) Enable async-await support (Note: need [regeneratorRuntime](https://babeljs.io/docs/plugins/transform-regenerator)).
+* `asyncAwait` - bool (default false) Enable async-await support (Note: need [regeneratorRuntime](https://babeljs.io/docs/plugins/transform-regenerator)).
 
 ```
-// disable ie10 support
+// enable ie10 support (default: disabled)
 {
   presets: [
     ["playlyfe", {"ie10": false}]
   ]
 }
 
-// disable react
+// disable react (default: enabled)
 {
   presets: [
     ["playlyfe", {"react": false}]
   ]
 }
 
-// disable babelRuntime
+// disable babelRuntime (default: enabled)
 {
   presets: [
     ["playlyfe", {"babelRuntime": false}]
   ]
 }
 
-// disable flow support
+// disable flow support (default: enabled)
 {
   presets: [
     ["playlyfe", {"flow": false}]
+  ]
+}
+
+// enable async-await support (default: disabled)
+{
+  presets: [
+    ["playlyfe", {"asynAwait": true}]
   ]
 }
 ```

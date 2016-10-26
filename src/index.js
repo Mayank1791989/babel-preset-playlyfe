@@ -5,7 +5,7 @@ const DEFAULT_OPTS = {
   reactIntl: true,
   babelRuntime: true,
   flow: true,
-  asyncAwait: true,
+  asyncAwait: false,
 };
 
 type Options = ?$Exact<{

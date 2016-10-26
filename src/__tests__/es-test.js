@@ -82,8 +82,6 @@ testParseCode('Default Flow Support is enabled', {
   `,
 });
 
-// NOTE: if react is enabled flow can't be disabled
-// as react preset has no option to disable flow (see babel-preset-react)
 testParseCode('Can disable flow support', {
   opts: [{ flow: false }],
   throws: true,
@@ -94,7 +92,7 @@ testParseCode('Can disable flow support', {
 
 // supports async await
 testParseCode('Async await syntax support', {
-  opts,
+  opts: [{ asyncAwait: true }],
   throws: false,
   code: `
     async function test() {
@@ -104,7 +102,7 @@ testParseCode('Async await syntax support', {
 });
 
 testExecCode('async await should work', {
-  opts,
+  opts: [{ asyncAwait: true }],
   code: `
     const response = "test-request-response";
 
