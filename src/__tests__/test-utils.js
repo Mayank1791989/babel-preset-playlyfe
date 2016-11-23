@@ -15,7 +15,7 @@ export function testParseCode(
     opts: Array<Opts>,
     code: string,
     throws: bool,
-  }>
+  }>,
 ) {
   testConfig.opts.forEach((opts) => {
     const runTransform = () => {
@@ -38,7 +38,7 @@ export function testExecCode(
   testConfig: $Exact<{
     opts: Array<Opts>,
     code: string,
-  }>
+  }>,
 ) {
   testConfig.opts.forEach((opts) => {
     describe(title, () => {

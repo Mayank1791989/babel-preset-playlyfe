@@ -1,7 +1,7 @@
 /* @flow */
 module.exports = (
   context: any,
-  opts: { reactIntl: bool }
+  opts: { reactIntl: bool },
 ) => ({
   plugins: [
     // same as babel-preset-react except flow plugins (flow support is added separately see es.js)
