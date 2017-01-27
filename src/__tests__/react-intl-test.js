@@ -1,3 +1,4 @@
+/* @flow */
 import { transform } from './test-utils';
 
 describe('support react-intl', () => {
