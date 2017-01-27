@@ -19,17 +19,17 @@
     "playlyfe"
   ],
   "scripts": {
-    "test": "npm run check-code && npm run testonly -- --coverage",
+    "test": "yarn run check-code && yarn run testonly -- --coverage",
     "testonly": "cross-env NODE_ENV=test jest",
-    "check-code": "npm run lint && npm run flow",
+    "check-code": "yarn run lint && yarn run flow",
     "flow": "flow check",
     "flow-typed-update": "flow-typed update",
     "lint": "eslint src",
     "report-coverage": "codecov",
     "build": "rm -rf lib && babel ./src --out-dir ./lib --ignore '**/__tests__/**,**/node_modules/**'",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "semantic-release": "semantic-release pre && yarn publish && semantic-release post",
     "commit": "git-cz",
-    "precommit": "npm run test"
+    "precommit": "yarn run test"
   },
   "homepage": "https://github.com/Mayank1791989/babel-preset-playlyfe#readme",
   "files": [
