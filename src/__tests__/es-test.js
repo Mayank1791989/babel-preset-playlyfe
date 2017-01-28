@@ -82,6 +82,14 @@ testParseCode('Default Flow Support is enabled', {
   `,
 });
 
+testParseCode('Support import shorthand', {
+  opts,
+  throws: false,
+  code: `
+    import { type A, B, typeof C } from 'test';
+  `,
+});
+
 testParseCode('Can disable flow support', {
   opts: [{ flow: false }],
   throws: true,
