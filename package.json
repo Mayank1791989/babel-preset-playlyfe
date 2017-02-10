@@ -70,7 +70,7 @@
     "cz-conventional-changelog": "1.2.0",
     "eslint": "3.14.1",
     "eslint-config-airbnb-base": "11.0.1",
-    "flow-bin": "0.38.0",
+    "flow-bin": "0.39.0",
     "flow-typed": "2.0.0",
     "husky": "0.13.1",
     "jest": "18.1.0",
