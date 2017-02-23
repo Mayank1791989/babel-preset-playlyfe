@@ -73,7 +73,7 @@
     "flow-bin": "0.38.0",
     "flow-typed": "2.0.0",
     "husky": "0.13.1",
-    "jest": "18.1.0",
+    "jest": "19.0.2",
     "react": "15.4.2",
     "react-intl": "2.2.3",
     "semantic-release": "6.3.6"
