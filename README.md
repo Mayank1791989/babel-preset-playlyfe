@@ -5,6 +5,8 @@
 
 # babel-preset-playlyfe
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Mayank1791989/babel-preset-playlyfe.svg)](https://greenkeeper.io/)
+
 > Babel preset for Javascript(es2015, es2016) React projects.
 
 ## Install
