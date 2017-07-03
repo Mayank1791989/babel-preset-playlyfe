@@ -1,5 +1,5 @@
 /* @flow */
-import { testParseCode } from './test-utils';
+import { testParseCode, transform } from './test-utils';
 
 testParseCode('react jsx', {
   opts: [null, undefined, { react: true }],
@@ -31,4 +31,14 @@ testParseCode('react jsx', {
       }
     }
   `,
+});
+
+test('include react source and self for dev', () => {
+  const code = `
+    const test = () => {
+      return <div />;
+    }
+  `;
+  const transformed = transform(code, { react: true });
+  expect(transformed.code).toMatchSnapshot();
 });

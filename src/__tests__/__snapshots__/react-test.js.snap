@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`include react source and self for dev 1`] = `
+"\\"use strict\\";
+
+var _jsxFileName = \\"test-file.js\\";
+
+var test = function test() {
+  return React.createElement(\\"div\\", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 3
+    },
+    __self: undefined
+  });
+};"
+`;
