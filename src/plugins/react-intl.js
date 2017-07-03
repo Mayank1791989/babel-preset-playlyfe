@@ -88,8 +88,7 @@ export default function () {
 
                     throw valuePath.buildCodeFrameError(
                         '[React Intl] Message failed to parse. ' +
-                        'See: http://formatjs.io/guides/message-syntax/',
-                        parseError
+                        'See: http://formatjs.io/guides/message-syntax/'
                     );
                 }
             } else {
