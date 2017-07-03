@@ -1,7 +1,7 @@
 /* @flow */
-import { testParseCode, testExecCode } from './test-utils';
+import { testParseCode, testExecCode, transform } from './test-utils';
 
-const opts = [null, undefined, { ie10: true }, { ie10: false }];
+const opts = [null, undefined];
 
 testParseCode('Allow trailing function commas', {
   opts,
@@ -45,24 +45,30 @@ testParseCode('Allow Object rest spread', {
   `,
 });
 
-testParseCode('Allow exports of form export name from module', {
+testParseCode('Allow exports of form export { name } from module', {
   opts,
   throws: false,
   code: `
-    export test from 'test-module';
+    export { test } from 'test-module';
   `,
 });
-
-testParseCode('Allow exports of form export * as name from module', {
+testParseCode('Dont allow exports of form export name from module', {
   opts,
   throws: false,
+  code: `
+    export { test } from 'test-module';
+  `,
+});
+testParseCode('Allow exports of form export * as name from module', {
+  opts,
+  throws: true,
   code: `
     export * as test from 'test-module';
   `,
 });
 
-testParseCode('Allow decorator', {
-  opts,
+testParseCode('Allow decorators only if enabled', {
+  opts: [{ decorators: true }],
   throws: false,
   code: `
     @generateStyles(() => ({}))
@@ -73,10 +79,52 @@ testParseCode('Allow decorator', {
     }
   `,
 });
+testParseCode('By default dont allow decorators', {
+  opts: [null],
+  throws: true,
+  code: `
+    @generateStyles(() => ({}))
+    class Test extends React.Component {
+      render() {
+        return null;
+      }
+    }
+  `,
+});
+testExecCode('decorators should work with static properties (some bug)', {
+  opts: [{ decorators: true }],
+  code: `
+    function someDecorator(Component) {
+      return class WrappedComponent {
+        render() {
+          <Component {...this.props} />
+        }
+      }
+    }
+
+    @someDecorator
+    class Test {
+      static propTypes = {
+        a: 10,
+      };
+    }
+
+    // Tests
+    // NOTE here 'Test' is 'someDecorator(Test)' not class Test
+    expect(Test.propTypes).toBeUndefined();
+  `,
+});
 
 testParseCode('Default Flow Support is enabled', {
   opts,
   throws: false,
+  code: `
+    function test(test1: string, test2: number) {}
+  `,
+});
+testParseCode('Flow Support can be disabled using flow option', {
+  opts: [{ flow: false }],
+  throws: true,
   code: `
     function test(test1: string, test2: number) {}
   `,
@@ -90,23 +138,56 @@ testParseCode('Support import shorthand', {
   `,
 });
 
-testParseCode('Can disable flow support', {
-  opts: [{ flow: false }],
+testParseCode('Support dynamic import if enabled', {
+  opts: [{ dynamicImport: true }],
+  throws: false,
+  code: `
+    function someDynamicImport() {
+      import('xyz').then(() => console.log('dynamic import'));
+    }
+  `,
+});
+testParseCode('By default dont support dynamic import', {
+  opts: [null],
   throws: true,
   code: `
-    function test(test1: string, test2: number) {}
+    function someDynamicImport() {
+      import('xyz').then(() => console.log('dynamic import'));
+    }
   `,
 });
 
+test('Support disable import conversion', () => {
+  const code = `
+    import { test } from 'test';
+    console.log('test');
+  `;
+  const transformed = transform(code, { modules: false });
+  expect(transformed.code).toMatchSnapshot();
+});
+
 // supports async await
-testParseCode('Async await syntax support', {
-  opts: [{ asyncAwait: true }],
-  throws: false,
-  code: `
+test('default dont transform transform async await', () => {
+  const transformed = transform(`
+    async function test() {
+      const a = await test2();
+    }
+  `);
+
+  expect(transformed.code).toMatchSnapshot();
+});
+
+test('transform if Async await enabled', () => {
+  const transformed = transform(
+    `
     async function test() {
       const a = await test2();
     }
   `,
+    { asyncAwait: true },
+  );
+
+  expect(transformed.code).toMatchSnapshot();
 });
 
 testExecCode('async await should work', {
@@ -129,29 +210,5 @@ testExecCode('async await should work', {
 
     // for async test
     returnValue(test());
-  `,
-});
-
-testExecCode('decorators should work with static properties', {
-  opts,
-  code: `
-    function someDecorator(Component) {
-      return class WrappedComponent {
-        render() {
-          <Component {...this.props} />
-        }
-      }
-    }
-
-    @someDecorator
-    class Test {
-      static propTypes = {
-        a: 10,
-      };
-    }
-
-    // Tests
-    // NOTE here 'Test' is 'someDecorator(Test)' not class Test
-    expect(Test.propTypes).toBeUndefined();
   `,
 });

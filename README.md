@@ -11,65 +11,30 @@
 
 ```sh
 $ npm install --save-dev babel-preset-playlyfe
+$ yarn add --dev babel-preset-playlyfe
 ```
->
-Note if 'babelRuntime'(see options below) is enabled then install 'babel-runtime' also.
-```sh
-  $ npm install --save babel-runtime
->
 
 ## Usage
 
-## .babelrc
-
-```json
+```javascript
+// .babelrc
 {
-  "presets": ["playlyfe"]
+  "presets": ["playlyfe", options]
 }
 ```
 
 ## Options
 
-* `ie10` - bool (default false) Add support for ie10.
+* `flow` - bool (default true) Enable flow support.
+* `dynamicImport` - boolean (default false) Allow dynamic imports.
+* `modules` - 'amd' | 'umd' | 'systemjs' | 'commonjs' | false (default 'commonjs').
+* `decorators` - boolean (default false) Enable decorators support.
+* `asyncAwait` - bool (default false) Enable async-await support (Note: need [regeneratorRuntime](https://babeljs.io/docs/plugins/transform-regenerator)).
+* `targets` - same as babel-preset-env [targets option](https://github.com/babel/babel-preset-env#options)
+* `useBuiltIns` - (default: true) same as babel-preset-env [useBuiltIns option](https://github.com/babel/babel-preset-env#options)
+
+
 * `react` - bool (default true) Enable react support.
 * `reactIntl` - bool (default true) Enable react-intl support.
+
 * `babelRuntime` - bool (default true) Enable [babel-plugin-transform-runtime plugin](https://babeljs.io/docs/plugins/transform-runtime).
-* `flow` - bool (default true) Enable flow support.
-* `asyncAwait` - bool (default false) Enable async-await support (Note: need [regeneratorRuntime](https://babeljs.io/docs/plugins/transform-regenerator)).
-
-```
-// enable ie10 support (default: disabled)
-{
-  presets: [
-    ["playlyfe", {"ie10": false}]
-  ]
-}
-
-// disable react (default: enabled)
-{
-  presets: [
-    ["playlyfe", {"react": false}]
-  ]
-}
-
-// disable babelRuntime (default: enabled)
-{
-  presets: [
-    ["playlyfe", {"babelRuntime": false}]
-  ]
-}
-
-// disable flow support (default: enabled)
-{
-  presets: [
-    ["playlyfe", {"flow": false}]
-  ]
-}
-
-// enable async-await support (default: disabled)
-{
-  presets: [
-    ["playlyfe", {"asynAwait": true}]
-  ]
-}
-```

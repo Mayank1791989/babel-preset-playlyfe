@@ -1,23 +1,28 @@
 /* @flow */
 import * as babel from 'babel-core';
+import preset from '../index';
 
 type Opts = null | typeof undefined | Object;
 
-export function transform(code: string, opts: Opts) {
+export function transform(code: string, presetOpts: Opts) {
   return babel.transform(code, {
-    presets: [[require('../index'), opts]], // eslint-disable-line global-require
+    presets: [[preset, presetOpts]], // eslint-disable-line global-require
+    // required for transformation
+    filename: 'test-file.js',
+    // required to avoid using global setting
+    babelrc: false,
   });
 }
 
 export function testParseCode(
   title: string,
-  testConfig: $Exact<{
+  testConfig: {|
     opts: Array<Opts>,
     code: string,
-    throws: bool,
-  }>,
+    throws: boolean,
+  |},
 ) {
-  testConfig.opts.forEach((opts) => {
+  testConfig.opts.forEach(opts => {
     const runTransform = () => {
       transform(testConfig.code, opts);
     };
@@ -35,12 +40,12 @@ export function testParseCode(
 
 export function testExecCode(
   title: string,
-  testConfig: $Exact<{
+  testConfig: {|
     opts: Array<Opts>,
     code: string,
-  }>,
+  |},
 ) {
-  testConfig.opts.forEach((opts) => {
+  testConfig.opts.forEach(opts => {
     describe(title, () => {
       it(`with opts = ${JSON.stringify(opts)}`, () => {
         // NOTE: here disabling babel runtime
@@ -51,8 +56,9 @@ export function testExecCode(
           babelRuntime: false,
         });
 
-        let fnCallReturnValue;
-        const sandbox: {[key: string]: any} = {
+        // eslint-disable-next-line
+        let fnCallReturnValue = undefined;
+        const sandbox: { [key: string]: any } = {
           expect,
           returnValue(value) {
             fnCallReturnValue = value;
@@ -73,4 +79,3 @@ export function testExecCode(
     });
   });
 }
-

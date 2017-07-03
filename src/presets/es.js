@@ -1,40 +1,70 @@
 /* @flow */
-type Options = $Exact<{
-  ie10: bool,
-  flow: bool,
-  asyncAwait: bool,
-}>;
+import presetEnv from 'babel-preset-env';
+import transformDecoratorsLegacy from 'babel-plugin-transform-decorators-legacy';
+import transformDecorators from 'babel-plugin-transform-decorators';
+import transformClassProperties from 'babel-plugin-transform-class-properties';
+import transformObjectRestSpread from 'babel-plugin-transform-object-rest-spread';
+import transformFlowStripTypes from 'babel-plugin-transform-flow-strip-types';
+import syntaxFlow from 'babel-plugin-syntax-flow';
+import syntaxDynamicImport from 'babel-plugin-syntax-dynamic-import';
 
-module.exports = (context: any, opts: Options) => ({
-  presets: [
-    opts.ie10
-    ? require('./es2015-ie10')
-    : require('babel-preset-es2015'),
-  ],
+export type Opts = {
+  flow: boolean,
+  asyncAwait: boolean,
+  dynamicImport: boolean,
+  modules: 'amd' | 'umd' | 'systemjs' | 'commonjs' | false,
+  targets: Array<any>,
+  decorators: boolean,
+  useBuiltIns: boolean,
+  debug: boolean,
+};
 
-  plugins: [
-    // See: https://github.com/loganfsmyth/babel-plugin-transform-decorators-legacy
-    // https://phabricator.babeljs.io/T2645
-    // NOTE: here order matters
-    // and decorator should be present before transform-class-properties
-    require('babel-plugin-transform-decorators-legacy').default,
-    require('babel-plugin-transform-decorators'),
+export const DEFAULT_OPTS: Opts = {
+  flow: true,
+  asyncAwait: false,
+  dynamicImport: false,
+  modules: 'commonjs',
+  targets: [],
+  decorators: false,
+  useBuiltIns: true,
+  debug: false,
+};
 
-    require('babel-plugin-syntax-trailing-function-commas'),
-    // support for async await: convert async await to generator
-    // Note: need "regenerator" runtime
-    opts.asyncAwait ? require('babel-plugin-transform-async-to-generator') : null,
+export default (context: any, opts: Opts) => {
+  const { targets, modules, debug, useBuiltIns } = opts;
 
-    require('babel-plugin-transform-class-properties'),
-    require('babel-plugin-transform-object-rest-spread'),
+  return {
+    presets: [
+      [
+        presetEnv,
+        {
+          targets,
+          modules,
+          debug,
+          useBuiltIns,
+          // only enable generator when asyncAwait enabled
+          exclude: !opts.asyncAwait // eslint-disable-line no-negated-condition
+            ? ['transform-regenerator', 'transform-async-to-generator']
+            : [],
+        },
+      ],
+    ],
 
-    require('babel-plugin-transform-export-extensions'),
+    plugins: [
+      opts.dynamicImport ? syntaxDynamicImport : null,
+      // See: https://github.com/loganfsmyth/babel-plugin-transform-decorators-legacy
+      // https://phabricator.babeljs.io/T2645
+      // NOTE: here order matters
+      // and decorator should be present before transform-class-properties
+      ...(opts.decorators
+        ? [transformDecoratorsLegacy, transformDecorators]
+        : []),
 
-    // flow support
-    ...(opts.flow ? [
-      require('babel-plugin-transform-flow-strip-types'),
-      require('babel-plugin-syntax-flow'),
-    ] : []),
+      transformClassProperties,
+      [transformObjectRestSpread, { useBuiltIns: true }],
 
-  ].filter(Boolean),
-});
+      // flow support
+      ...(opts.flow ? [transformFlowStripTypes, syntaxFlow] : []),
+    ].filter(Boolean),
+  };
+};

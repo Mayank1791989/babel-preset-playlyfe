@@ -2,6 +2,7 @@
 <PROJECT_ROOT>/\(lib|coverage\)/.*
 .*/node_modules/\(findup\|config-chain\|npmconf\)/test/.*
 <PROJECT_ROOT>/node_modules/fbjs/.*
+<PROJECT_ROOT>/node_modules/babel-plugin-flow-runtime/.*
 
 [include]
 
@@ -17,4 +18,4 @@ suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe
 suppress_comment=\\(.\\|\n\\)*\\$FlowDisable
 
 [version]
-^0.38.0
+^0.49.1

@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`preset-options throws when unknown options passed 1`] = `
+"unknown option passed 'xyz'
+Available opts
+{
+  flow: boolean;
+  asyncAwait: boolean;
+  dynamicImport: boolean;
+  modules: \\"amd\\" | \\"umd\\" | \\"systemjs\\" | \\"commonjs\\" | false;
+  targets: Array<any>;
+  decorators: boolean;
+  useBuiltIns: boolean;
+  debug: boolean;
+  reactIntl: boolean;
+  react: boolean;
+  babelRuntime: false;
+}"
+`;
+
+exports[`preset-options throws when wrong value passed for option 1`] = `
+"opts.react must be true or false
+
+Expected: boolean
+
+Actual: string
+"
+`;

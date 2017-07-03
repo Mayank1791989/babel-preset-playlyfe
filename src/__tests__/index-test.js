@@ -10,7 +10,7 @@ describe('preset-options', () => {
 
   it('dont throw when options are correct', () => {
     expect(() => {
-      preset(null, { react: true, ie10: false });
+      preset(null, { react: true });
     }).not.toThrow();
   });
 
@@ -18,13 +18,13 @@ describe('preset-options', () => {
     expect(() => {
       // $FlowDisable - testing this error
       preset(null, { xyz: true });
-    }).toThrow();
+    }).toThrowErrorMatchingSnapshot();
   });
 
   it('throws when wrong value passed for option', () => {
     expect(() => {
       // $FlowDisable - testing this error
       preset(null, { react: 'xyz' });
-    }).toThrow();
+    }).toThrowErrorMatchingSnapshot();
   });
 });
