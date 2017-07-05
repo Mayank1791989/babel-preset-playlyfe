@@ -8,7 +8,9 @@ Available opts
   asyncAwait: boolean;
   dynamicImport: boolean;
   modules: \\"amd\\" | \\"umd\\" | \\"systemjs\\" | \\"commonjs\\" | false;
-  targets: Array<any>;
+  targets: {
+    
+  };
   decorators: boolean;
   useBuiltIns: boolean;
   debug: boolean;
