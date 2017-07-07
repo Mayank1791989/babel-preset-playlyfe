@@ -16,11 +16,11 @@ const DEFAULT_OPTS = {
   ...PRESET_ES_DEFAULT_OPTS,
   ...PRESET_REACT_DEFAULT_OPTS,
   react: true,
-  babelRuntime: false,
+  babelRuntime: true,
 };
 
 type Opts = PresetESOpts &
-  PresetReactOpts & { react: boolean, babelRuntime: false };
+  PresetReactOpts & { react: boolean, babelRuntime: boolean };
 
 export default (context: any, opts?: ?$Shape<Opts>) => {
   // eslint-disable-next-line no-use-before-define

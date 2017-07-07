@@ -16,7 +16,7 @@ Available opts
   debug: boolean;
   reactIntl: boolean;
   react: boolean;
-  babelRuntime: false;
+  babelRuntime: boolean;
 }"
 `;
 
