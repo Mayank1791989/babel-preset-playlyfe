@@ -130,6 +130,17 @@ testParseCode('Flow Support can be disabled using flow option', {
   `,
 });
 
+test('flow should strip whole import if it contains only types', () => {
+  const transformed = transform(`
+    import { type A, type B } from 'some-package';
+    function test() {
+      console.log('test');
+    }
+  `);
+
+  expect(transformed.code).toMatchSnapshot();
+});
+
 testParseCode('Support import shorthand', {
   opts,
   throws: false,

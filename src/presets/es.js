@@ -8,6 +8,8 @@ import transformFlowStripTypes from 'babel-plugin-transform-flow-strip-types';
 import syntaxFlow from 'babel-plugin-syntax-flow';
 import syntaxDynamicImport from 'babel-plugin-syntax-dynamic-import';
 
+import transformFlowStripTypesImportFix from '../plugins/transform-flow-strip-types-import-fix';
+
 export type Opts = {
   flow: boolean,
   asyncAwait: boolean,
@@ -64,7 +66,7 @@ export default (context: any, opts: Opts) => {
       [transformObjectRestSpread, { useBuiltIns: true }],
 
       // flow support
-      ...(opts.flow ? [transformFlowStripTypes, syntaxFlow] : []),
+      ...(opts.flow ? [transformFlowStripTypesImportFix, transformFlowStripTypes, syntaxFlow] : []),
     ].filter(Boolean),
   };
 };

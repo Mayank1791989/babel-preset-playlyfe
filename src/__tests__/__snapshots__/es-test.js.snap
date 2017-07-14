@@ -14,6 +14,14 @@ async function test() {
 }"
 `;
 
+exports[`flow should strip whole import if it contains only types 1`] = `
+"'use strict';
+
+function test() {
+  console.log('test');
+}"
+`;
+
 exports[`transform if Async await enabled 1`] = `
 "\\"use strict\\";
 
