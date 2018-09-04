@@ -1,20 +1,23 @@
-sudo: false
 language: node_js
-cache: yarn
-notifications:
-  email: false
+
 node_js:
-  - '7'
-  - '6'
+  - 8
+  - 10
+
 script:
-  - yarn run test
-  - yarn run build
-after_success:
-  - 'curl -Lo travis_after_all.py https://git.io/travis_after_all'
-  - python travis_after_all.py
-  - export $(cat .to_export_back) &> /dev/null
-  - yarn run report-coverage
-  - yarn run semantic-release
-branches:
-  except:
-    - /^v\d+\.\d+\.\d+$/
+  - yarn test
+
+jobs:
+  include:
+    # Define the release stage that runs semantic-release
+    - stage: release
+      node_js: lts/*
+      script:
+        yarn build
+      deploy:
+        provider: script
+        skip_cleanup: true
+        script:
+          - yarn run semantic-release
+        on:
+          branch: master
