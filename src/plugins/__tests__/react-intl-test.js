@@ -7,13 +7,11 @@ const fixtureFile = path.join(__dirname, './data', 'component.js');
 describe('check intl messages in transformed file metadata', () => {
   const { metadata } = transformFileSync(fixtureFile, {
     babelrc: false,
-    presets: [require('babel-preset-env')],
-    plugins: [
-      require('babel-plugin-transform-object-rest-spread'),
-      require('babel-plugin-syntax-jsx'),
-      require('babel-plugin-transform-react-jsx'),
-      require('../react-intl').default,
+    presets: [
+      require('@babel/preset-env').default,
+      require('@babel/preset-react').default,
     ],
+    plugins: [require('../react-intl').default],
   });
   it('exports 6 intl messages', () => {
     expect(metadata['react-intl'].messages).toMatchSnapshot();
@@ -36,13 +34,11 @@ test('correctly throw invalid intl message error', () => {
     `,
       {
         babelrc: false,
-        presets: [require('babel-preset-env')],
-        plugins: [
-          require('babel-plugin-transform-object-rest-spread'),
-          require('babel-plugin-syntax-jsx'),
-          require('babel-plugin-transform-react-jsx'),
-          require('../react-intl').default,
+        presets: [
+          require('@babel/preset-env').default,
+          require('@babel/preset-react').default,
         ],
+        plugins: [require('../react-intl').default],
       },
     );
   }).toThrowErrorMatchingSnapshot();

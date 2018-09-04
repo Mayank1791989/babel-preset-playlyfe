@@ -1,23 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`preset-options throws when unknown options passed 1`] = `
-"unknown option passed 'xyz'
-Available opts
-{
+"Value should not contain the key: \\"xyz\\"
+
+Expected: {|
   flow: boolean;
   asyncAwait: boolean;
-  dynamicImport: boolean;
+  dynamicImport: false | \\"webpack\\" | \\"node\\";
   modules: \\"amd\\" | \\"umd\\" | \\"systemjs\\" | \\"commonjs\\" | false;
   targets: {
     
   };
-  decorators: boolean;
   useBuiltIns: boolean;
   debug: boolean;
   reactIntl: boolean;
+  useBuiltIns: boolean;
+  development: boolean;
   react: boolean;
   babelRuntime: boolean;
-}"
+|}
+
+Actual Value: {
+  \\"flow\\": true,
+  \\"asyncAwait\\": false,
+  \\"dynamicImport\\": false,
+  \\"modules\\": \\"commonjs\\",
+  \\"targets\\": {},
+  \\"useBuiltIns\\": true,
+  \\"debug\\": false,
+  \\"reactIntl\\": true,
+  \\"development\\": false,
+  \\"react\\": true,
+  \\"babelRuntime\\": true,
+  \\"xyz\\": true
+}
+
+Actual Type: {
+  flow: boolean;
+  asyncAwait: boolean;
+  dynamicImport: boolean;
+  modules: string;
+  targets: {
+    
+  };
+  useBuiltIns: boolean;
+  debug: boolean;
+  reactIntl: boolean;
+  development: boolean;
+  react: boolean;
+  babelRuntime: boolean;
+  xyz: boolean;
+}
+"
 `;
 
 exports[`preset-options throws when wrong value passed for option 1`] = `

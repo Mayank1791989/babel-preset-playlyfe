@@ -1,14 +1,14 @@
 /* @flow */
 import * as babel from 'babel-core';
-import preset from '../index';
+import preset, { type Opts as PresetOpts } from '../index';
 
-type Opts = null | typeof undefined | Object;
+type Opts = $Shape<PresetOpts>;
 
-export function transform(code: string, presetOpts: Opts) {
+export function transform(code: string, presetOpts: ?Opts) {
   return babel.transform(code, {
     presets: [[preset, presetOpts]], // eslint-disable-line global-require
     // required for transformation
-    filename: 'test-file.js',
+    filename: '/test-file.js',
     // required to avoid using global setting
     babelrc: false,
   });
@@ -17,7 +17,7 @@ export function transform(code: string, presetOpts: Opts) {
 export function testParseCode(
   title: string,
   testConfig: {|
-    opts: Array<Opts>,
+    opts: Array<?Opts>,
     code: string,
     throws: boolean,
   |},
@@ -41,7 +41,7 @@ export function testParseCode(
 export function testExecCode(
   title: string,
   testConfig: {|
-    opts: Array<Opts>,
+    opts: Array<?Opts>,
     code: string,
   |},
 ) {
@@ -50,7 +50,7 @@ export function testExecCode(
       it(`with opts = ${JSON.stringify(opts)}`, () => {
         // NOTE: here disabling babel runtime
         const transformed = transform(testConfig.code, {
-          ...(opts || {}),
+          ...opts,
           // NOTE: disabling runtime as we will exec code in sandboxed environment
           // we cant use require|imports only sandbox variables present
           babelRuntime: false,
@@ -58,7 +58,7 @@ export function testExecCode(
 
         // eslint-disable-next-line
         let fnCallReturnValue = undefined;
-        const sandbox: { [key: string]: any } = {
+        const sandbox = {
           expect,
           returnValue(value) {
             fnCallReturnValue = value;

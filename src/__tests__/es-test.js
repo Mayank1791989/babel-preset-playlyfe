@@ -1,7 +1,7 @@
 /* @flow */
 import { testParseCode, testExecCode, transform } from './test-utils';
 
-const opts = [null, undefined];
+const opts = [undefined];
 
 testParseCode('Allow trailing function commas', {
   opts,
@@ -28,6 +28,54 @@ testParseCode('Allow class properties', {
   `,
 });
 
+test('Transform class properties', () => {
+  const { code } = transform(
+    `
+    class Test {
+      static x = 5;
+      y = 10;
+    }
+  `,
+    { modules: false },
+  );
+  expect(code).toMatchInlineSnapshot(`
+"import _classCallCheck from \\"@babel/runtime/helpers/esm/classCallCheck\\";
+
+var Test = function Test() {
+  _classCallCheck(this, Test);
+
+  this.y = 10;
+};
+
+Test.x = 5;"
+`);
+});
+
+test('Use commonjs by default for modules', () => {
+  const { code } = transform(
+    `
+    class Test {
+      static x = 5;
+      y = 10;
+    }
+  `,
+  );
+  expect(code).toMatchInlineSnapshot(`
+"\\"use strict\\";
+
+var _interopRequireDefault = require(\\"@babel/runtime/helpers/interopRequireDefault\\");
+
+var _classCallCheck2 = _interopRequireDefault(require(\\"@babel/runtime/helpers/classCallCheck\\"));
+
+var Test = function Test() {
+  (0, _classCallCheck2.default)(this, Test);
+  this.y = 10;
+};
+
+Test.x = 5;"
+`);
+});
+
 testParseCode('Allow Object rest spread', {
   opts,
   throws: false,
@@ -45,6 +93,25 @@ testParseCode('Allow Object rest spread', {
   `,
 });
 
+test('correctly transform object-rest-spread', () => {
+  const { code } = transform(`
+    const a = { name: 'babel' };
+    const b = { core: 'core' };
+    const c = { ...a, ...b };
+  `);
+  expect(code).toMatchInlineSnapshot(`
+"\\"use strict\\";
+
+var a = {
+  name: 'babel'
+};
+var b = {
+  core: 'core'
+};
+var c = Object.assign({}, a, b);"
+`);
+});
+
 testParseCode('Allow exports of form export { name } from module', {
   opts,
   throws: false,
@@ -52,6 +119,7 @@ testParseCode('Allow exports of form export { name } from module', {
     export { test } from 'test-module';
   `,
 });
+
 testParseCode('Dont allow exports of form export name from module', {
   opts,
   throws: false,
@@ -59,59 +127,12 @@ testParseCode('Dont allow exports of form export name from module', {
     export { test } from 'test-module';
   `,
 });
+
 testParseCode('Allow exports of form export * as name from module', {
   opts,
   throws: true,
   code: `
     export * as test from 'test-module';
-  `,
-});
-
-testParseCode('Allow decorators only if enabled', {
-  opts: [{ decorators: true }],
-  throws: false,
-  code: `
-    @generateStyles(() => ({}))
-    class Test extends React.Component {
-      render() {
-        return null;
-      }
-    }
-  `,
-});
-testParseCode('By default dont allow decorators', {
-  opts: [null],
-  throws: true,
-  code: `
-    @generateStyles(() => ({}))
-    class Test extends React.Component {
-      render() {
-        return null;
-      }
-    }
-  `,
-});
-testExecCode('decorators should work with static properties (some bug)', {
-  opts: [{ decorators: true }],
-  code: `
-    function someDecorator(Component) {
-      return class WrappedComponent {
-        render() {
-          <Component {...this.props} />
-        }
-      }
-    }
-
-    @someDecorator
-    class Test {
-      static propTypes = {
-        a: 10,
-      };
-    }
-
-    // Tests
-    // NOTE here 'Test' is 'someDecorator(Test)' not class Test
-    expect(Test.propTypes).toBeUndefined();
   `,
 });
 
@@ -130,7 +151,7 @@ testParseCode('Flow Support can be disabled using flow option', {
   `,
 });
 
-test('flow should strip whole import if it contains only types', () => {
+test('[Bug] flow should strip whole import if it contains only types', () => {
   const transformed = transform(`
     import { type A, type B } from 'some-package';
     function test() {
@@ -138,7 +159,13 @@ test('flow should strip whole import if it contains only types', () => {
     }
   `);
 
-  expect(transformed.code).toMatchSnapshot();
+  expect(transformed.code).toMatchInlineSnapshot(`
+"\\"use strict\\";
+
+function test() {
+  console.log('test');
+}"
+`);
 });
 
 testParseCode('Support import shorthand', {
@@ -150,7 +177,7 @@ testParseCode('Support import shorthand', {
 });
 
 testParseCode('Support dynamic import if enabled', {
-  opts: [{ dynamicImport: true }],
+  opts: [{ dynamicImport: 'webpack' }],
   throws: false,
   code: `
     function someDynamicImport() {
@@ -158,6 +185,50 @@ testParseCode('Support dynamic import if enabled', {
     }
   `,
 });
+
+describe('Transform dynamic import', () => {
+  const code = `
+    function someDynamicImport() {
+      import('xyz').then(() => console.log('dynamic import'));
+    }
+  `;
+
+  test('webpack', () => {
+    const transformed = transform(code, {
+      dynamicImport: 'webpack',
+    });
+
+    expect(transformed.code).toMatchInlineSnapshot(`
+"\\"use strict\\";
+
+function someDynamicImport() {
+  import('xyz').then(function () {
+    return console.log('dynamic import');
+  });
+}"
+`);
+  });
+
+  test('node', () => {
+    const transformed = transform(code, {
+      dynamicImport: 'node',
+      modules: false,
+    });
+
+    expect(transformed.code).toMatchInlineSnapshot(`
+"import _interopRequireWildcard from \\"@babel/runtime/helpers/esm/interopRequireWildcard\\";
+
+function someDynamicImport() {
+  Promise.resolve().then(function () {
+    return _interopRequireWildcard(require('xyz'));
+  }).then(function () {
+    return console.log('dynamic import');
+  });
+}"
+`);
+  });
+});
+
 testParseCode('By default dont support dynamic import', {
   opts: [null],
   throws: true,
@@ -174,7 +245,10 @@ test('Support disable import conversion', () => {
     console.log('test');
   `;
   const transformed = transform(code, { modules: false });
-  expect(transformed.code).toMatchSnapshot();
+  expect(transformed.code).toMatchInlineSnapshot(`
+"import { test } from 'test';
+console.log('test');"
+`);
 });
 
 // supports async await
@@ -185,7 +259,13 @@ test('default dont transform transform async await', () => {
     }
   `);
 
-  expect(transformed.code).toMatchSnapshot();
+  expect(transformed.code).toMatchInlineSnapshot(`
+"\\"use strict\\";
+
+async function test() {
+  var a = await test2();
+}"
+`);
 });
 
 test('transform if Async await enabled', () => {
@@ -195,7 +275,7 @@ test('transform if Async await enabled', () => {
       const a = await test2();
     }
   `,
-    { asyncAwait: true },
+    { asyncAwait: true, modules: false },
   );
 
   expect(transformed.code).toMatchSnapshot();
@@ -222,4 +302,15 @@ testExecCode('async await should work', {
     // for async test
     returnValue(test());
   `,
+});
+
+test('Correctly replace @babel/polyfill with individual import for target', () => {
+  const { code } = transform(
+    `
+    import '@babel/polyfill';
+  `,
+    { modules: false },
+  );
+
+  expect(code).toMatchSnapshot();
 });

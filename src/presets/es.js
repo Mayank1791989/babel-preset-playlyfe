@@ -1,22 +1,17 @@
 /* @flow */
-import presetEnv from 'babel-preset-env';
-import transformDecoratorsLegacy from 'babel-plugin-transform-decorators-legacy';
-import transformDecorators from 'babel-plugin-transform-decorators';
-import transformClassProperties from 'babel-plugin-transform-class-properties';
-import transformObjectRestSpread from 'babel-plugin-transform-object-rest-spread';
-import transformFlowStripTypes from 'babel-plugin-transform-flow-strip-types';
-import syntaxFlow from 'babel-plugin-syntax-flow';
-import syntaxDynamicImport from 'babel-plugin-syntax-dynamic-import';
-
-import transformFlowStripTypesImportFix from '../plugins/transform-flow-strip-types-import-fix';
+import presetEnv from '@babel/preset-env';
+import presetFlow from '@babel/preset-flow';
+import transformClassProperties from '@babel/plugin-proposal-class-properties';
+import transformObjectRestSpread from '@babel/plugin-proposal-object-rest-spread';
+import syntaxDynamicImport from '@babel/plugin-syntax-dynamic-import';
+import pluginDynamicImportNode from 'babel-plugin-dynamic-import-node';
 
 export type Opts = {
   flow: boolean,
   asyncAwait: boolean,
-  dynamicImport: boolean,
+  dynamicImport: false | 'webpack' | 'node',
   modules: 'amd' | 'umd' | 'systemjs' | 'commonjs' | false,
   targets: Object,
-  decorators: boolean,
   useBuiltIns: boolean,
   debug: boolean,
 };
@@ -27,13 +22,12 @@ export const DEFAULT_OPTS: Opts = Object.freeze({
   dynamicImport: false,
   modules: 'commonjs',
   targets: {},
-  decorators: false,
   useBuiltIns: true,
   debug: false,
 });
 
 export default (context: any, opts: Opts) => {
-  const { targets, modules, debug, useBuiltIns } = opts;
+  const { targets, modules, debug, useBuiltIns, asyncAwait } = opts;
 
   return {
     presets: [
@@ -43,36 +37,28 @@ export default (context: any, opts: Opts) => {
           targets,
           modules,
           debug,
-          useBuiltIns,
+          useBuiltIns: useBuiltIns ? 'entry' : false,
           // only enable generator when asyncAwait enabled
-          exclude: !opts.asyncAwait // eslint-disable-line no-negated-condition
+          exclude: !asyncAwait // eslint-disable-line no-negated-condition
             ? ['transform-regenerator', 'transform-async-to-generator']
             : [],
         },
       ],
+      opts.flow ? presetFlow : null,
     ],
 
     plugins: [
+      // dynamic import
       opts.dynamicImport ? syntaxDynamicImport : null,
-      // See: https://github.com/loganfsmyth/babel-plugin-transform-decorators-legacy
-      // https://phabricator.babeljs.io/T2645
-      // NOTE: here order matters
-      // and decorator should be present before transform-class-properties
-      ...(opts.decorators
-        ? [transformDecoratorsLegacy, transformDecorators]
-        : []),
+      opts.dynamicImport === 'node' ? pluginDynamicImportNode : null,
 
-      transformClassProperties,
-      [transformObjectRestSpread, { useBuiltIns: true }],
+      // add class properties support
+      // NOTE: keeping loose: true see issue: https://github.com/facebook/create-react-app/issues/4263
+      [transformClassProperties, { loose: true }],
 
-      // flow support
-      ...(opts.flow
-        ? [
-            transformFlowStripTypesImportFix,
-            transformFlowStripTypes,
-            syntaxFlow,
-          ]
-        : []),
+      // add object rest spread support
+      // keeping useBuiltIns: true & loose: false to use Object.assign which is fine for our use case
+      [transformObjectRestSpread, { useBuiltIns: true, loose: true }],
     ].filter(Boolean),
   };
 };

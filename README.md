@@ -28,13 +28,13 @@ $ yarn add --dev babel-preset-playlyfe
 * `flow` - bool (default true) Enable flow support.
 * `dynamicImport` - boolean (default false) Allow dynamic imports.
 * `modules` - 'amd' | 'umd' | 'systemjs' | 'commonjs' | false (default 'commonjs').
-* `decorators` - boolean (default false) Enable decorators support.
-* `asyncAwait` - bool (default false) Enable async-await support (Note: need [regeneratorRuntime](https://babeljs.io/docs/plugins/transform-regenerator)).
 * `targets` - same as babel-preset-env [targets option](https://github.com/babel/babel-preset-env#options)
 * `useBuiltIns` - (default: true) same as babel-preset-env [useBuiltIns option](https://github.com/babel/babel-preset-env#options)
-
+* `asyncAwait` - bool (default false) Enable async-await support (Note: need [regeneratorRuntime](https://babeljs.io/docs/plugins/transform-regenerator)).
 
 * `react` - bool (default true) Enable react support.
 * `reactIntl` - bool (default true) Enable react-intl support.
 
 * `babelRuntime` - bool (default true) Enable [babel-plugin-transform-runtime plugin](https://babeljs.io/docs/plugins/transform-runtime).
+
+* `development` - bool (default false) to enable dev mode

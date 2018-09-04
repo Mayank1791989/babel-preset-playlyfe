@@ -1,20 +1,30 @@
 {
-  presets: [
-    ['babel-preset-env', {
-      target: {
-        node: 6,
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": 8
+        }
       }
-    }],
-    'babel-preset-flow',
+    ],
+    "@babel/preset-flow"
   ],
-  plugins: [
-    ['babel-plugin-transform-object-rest-spread', { useBuiltIns: true }],
-    ['babel-plugin-flow-runtime', { assert: true, annotate: true }],
-    ["transform-runtime", {
-      "helpers": true,
-      "polyfill": true,
-      "regenerator": false,
-      "moduleName": "babel-runtime"
-    }]
+  "plugins": [
+    [
+      "babel-plugin-flow-runtime",
+      {
+        "assert": true,
+        "annotate": true
+      }
+    ],
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "helpers": true,
+        // "polyfill": true,
+        "regenerator": false,
+      }
+    ]
   ]
 }
