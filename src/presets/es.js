@@ -21,7 +21,7 @@ export type Opts = {
   debug: boolean,
 };
 
-export const DEFAULT_OPTS: Opts = {
+export const DEFAULT_OPTS: Opts = Object.freeze({
   flow: true,
   asyncAwait: false,
   dynamicImport: false,
@@ -30,7 +30,7 @@ export const DEFAULT_OPTS: Opts = {
   decorators: false,
   useBuiltIns: true,
   debug: false,
-};
+});
 
 export default (context: any, opts: Opts) => {
   const { targets, modules, debug, useBuiltIns } = opts;
@@ -66,7 +66,13 @@ export default (context: any, opts: Opts) => {
       [transformObjectRestSpread, { useBuiltIns: true }],
 
       // flow support
-      ...(opts.flow ? [transformFlowStripTypesImportFix, transformFlowStripTypes, syntaxFlow] : []),
+      ...(opts.flow
+        ? [
+            transformFlowStripTypesImportFix,
+            transformFlowStripTypes,
+            syntaxFlow,
+          ]
+        : []),
     ].filter(Boolean),
   };
 };

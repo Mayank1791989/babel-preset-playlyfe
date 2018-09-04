@@ -22,7 +22,8 @@ describe('check intl messages in transformed file metadata', () => {
 
 test('correctly throw invalid intl message error', () => {
   expect(() => {
-    transform(`
+    transform(
+      `
       import React from 'react';
       import { FormattedMessage } from 'react-intl';
 
@@ -32,15 +33,17 @@ test('correctly throw invalid intl message error', () => {
           defaultMessage="{xyz, select, y {test}"
         />
       );
-    `, {
-      babelrc: false,
-      presets: [require('babel-preset-env')],
-      plugins: [
-        require('babel-plugin-transform-object-rest-spread'),
-        require('babel-plugin-syntax-jsx'),
-        require('babel-plugin-transform-react-jsx'),
-        require('../react-intl').default,
-      ],
-    });
+    `,
+      {
+        babelrc: false,
+        presets: [require('babel-preset-env')],
+        plugins: [
+          require('babel-plugin-transform-object-rest-spread'),
+          require('babel-plugin-syntax-jsx'),
+          require('babel-plugin-transform-react-jsx'),
+          require('../react-intl').default,
+        ],
+      },
+    );
   }).toThrowErrorMatchingSnapshot();
 });

@@ -1,3 +1,5 @@
+/* @flow */
+/* eslint-disable no-param-reassign */
 /*
  * Copyright 2015, Yahoo Inc.
  * Copyrights licensed under the New BSD License.
@@ -17,7 +19,7 @@ const DESCRIPTOR_PROPS = new Set(['id', 'description', 'defaultMessage']);
 const EXTRACTED = Symbol('ReactIntlExtracted');
 const MESSAGES = Symbol('ReactIntlMessages');
 
-export default function ({ types: t }) {
+export default function({ types: t }: $FixMe) {
   function getModuleSourceName(opts) {
     return opts.moduleSourceName || 'react-intl';
   }
@@ -148,7 +150,7 @@ export default function ({ types: t }) {
       }
     }
 
-    let loc;
+    let loc = null;
     if (opts.extractSourceLocation) {
       loc = {
         file: p.relative(process.cwd(), file.opts.filename),
@@ -176,13 +178,13 @@ export default function ({ types: t }) {
   }
 
   return {
-    pre(file) {
+    pre(file: $FixMe) {
       if (!file.has(MESSAGES)) {
         file.set(MESSAGES, new Map());
       }
     },
 
-    post(file) {
+    post(file: $FixMe) {
       const { opts } = this;
       const { filename } = file.opts;
 
@@ -210,7 +212,7 @@ export default function ({ types: t }) {
     },
 
     visitor: {
-      JSXOpeningElement(path, state) {
+      JSXOpeningElement(path: $FixMe, state: $FixMe) {
         if (wasExtracted(path)) {
           return;
         }
@@ -261,6 +263,7 @@ export default function ({ types: t }) {
                 attr.remove();
                 return true;
               }
+              return false;
             });
 
             // Tag the AST node so we don't try to extract it twice.
@@ -269,7 +272,7 @@ export default function ({ types: t }) {
         }
       },
 
-      CallExpression(path, state) {
+      CallExpression(path: $FixMe, state: $FixMe) {
         const moduleSourceName = getModuleSourceName(state.opts);
         const callee = path.get('callee');
 
@@ -320,7 +323,7 @@ export default function ({ types: t }) {
         }
 
         if (referencesImport(callee, moduleSourceName, FUNCTION_NAMES)) {
-          const messagesObj = path.get('arguments')[0];
+          const [messagesObj] = path.get('arguments');
 
           assertObjectExpression(messagesObj);
 
@@ -331,12 +334,12 @@ export default function ({ types: t }) {
         }
 
         if (isIntlFunction(callee)) {
-          const messagesObj = path.get('arguments')[0];
+          const [messagesObj] = path.get('arguments');
           try {
             assertObjectExpression(messagesObj);
-            processMessageObject(messagesObj, true);
+            processMessageObject(messagesObj);
           } catch (e) {
-            return;
+            // console.log(e);
           }
         }
       },
@@ -349,8 +352,7 @@ function isIntlFunction(path) {
     return false;
   }
   return (
-      path.node.property.name === 'formatMessage' ||
-      path.node.property.name === 'formatHTMLMessage'
+    path.node.property.name === 'formatMessage' ||
+    path.node.property.name === 'formatHTMLMessage'
   );
 }
-

@@ -25,6 +25,8 @@ exports[`preset-options throws when wrong value passed for option 1`] = `
 
 Expected: boolean
 
-Actual: string
+Actual Value: \\"xyz\\"
+
+Actual Type: string
 "
 `;

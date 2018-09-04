@@ -3,8 +3,9 @@ module.exports = {
   plugins: ['playlyfe'],
   extends: [
     'plugin:playlyfe/js',
-    'plugin:playlyfe/flow',
+    'plugin:playlyfe/flowtype',
     'plugin:playlyfe/testing:jest',
+    'plugin:playlyfe/prettier',
   ],
   env: {
     node: true,

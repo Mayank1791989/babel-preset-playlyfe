@@ -11,9 +11,9 @@ export type Opts = {
   reactIntl: boolean,
 };
 
-export const DEFAULT_OPTS: Opts = {
+export const DEFAULT_OPTS: Opts = Object.freeze({
   reactIntl: true,
-};
+});
 
 export default (context: any, opts: Opts) => ({
   plugins: [

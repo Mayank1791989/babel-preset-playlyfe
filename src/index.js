@@ -12,12 +12,12 @@ import transformRuntime from 'babel-plugin-transform-runtime';
 import { reify, type Type } from 'flow-runtime';
 import _pick from 'lodash/pick';
 
-const DEFAULT_OPTS = {
+const DEFAULT_OPTS = Object.freeze({
   ...PRESET_ES_DEFAULT_OPTS,
   ...PRESET_REACT_DEFAULT_OPTS,
   react: true,
   babelRuntime: true,
-};
+});
 
 type Opts = PresetESOpts &
   PresetReactOpts & { react: boolean, babelRuntime: boolean };
