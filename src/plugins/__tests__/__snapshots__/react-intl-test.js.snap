@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`check intl messages in transformed file metadata exports 6 intl messages 1`] = `
+Array [
+  Object {
+    "defaultMessage": "External Define Messasssge",
+    "description": undefined,
+    "id": "externaslDefineMessage",
+  },
+  Object {
+    "defaultMessage": "Inline Text 1",
+    "description": undefined,
+    "id": "inlineComponent",
+  },
+  Object {
+    "defaultMessage": "Inline Text 1",
+    "description": undefined,
+    "id": "inlineHTMLComponent",
+  },
+  Object {
+    "defaultMessage": "Inline DefineMessage",
+    "description": undefined,
+    "id": "inlineDefineMessage",
+  },
+  Object {
+    "defaultMessage": "Inline Format Message",
+    "description": undefined,
+    "id": "inlineFormatMessage",
+  },
+  Object {
+    "defaultMessage": "Inline Format HTML Message",
+    "description": undefined,
+    "id": "inlineFormatHTMLMessage",
+  },
+]
+`;
+
+exports[`correctly throw invalid intl message error 1`] = `
+"unknown: [React Intl] Message failed to parse. See: http://formatjs.io/guides/message-syntax/
+SyntaxError: Expected \\"=\\", \\"\\\\\\\\#\\", \\"\\\\\\\\\\\\\\\\\\", \\"\\\\\\\\u\\", \\"\\\\\\\\{\\", \\"\\\\\\\\}\\", \\"}\\" or [^{}\\\\\\\\\\\\0-\\\\x1F\\\\x7f \\\\t\\\\n\\\\r] but end of input found."
+`;
