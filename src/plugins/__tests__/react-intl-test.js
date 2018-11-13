@@ -1,6 +1,7 @@
 /* @flow */
 import { transformFileSync, transform } from 'babel-core';
 import path from 'path';
+import stripAnsi from 'strip-ansi';
 
 const fixtureFile = path.join(__dirname, './data', 'component.js');
 
@@ -20,26 +21,30 @@ describe('check intl messages in transformed file metadata', () => {
 
 test('correctly throw invalid intl message error', () => {
   expect(() => {
-    transform(
-      `
-      import React from 'react';
-      import { FormattedMessage } from 'react-intl';
+    try {
+      transform(
+        `
+        import React from 'react';
+        import { FormattedMessage } from 'react-intl';
 
-      const Component = (
-        <FormattedMessage
-          id="test.xyz"
-          defaultMessage="{xyz, select, y {test}"
-        />
+        const Component = (
+          <FormattedMessage
+            id="test.xyz"
+            defaultMessage="{xyz, select, y {test}"
+          />
+        );
+      `,
+        {
+          babelrc: false,
+          presets: [
+            require('@babel/preset-env').default,
+            require('@babel/preset-react').default,
+          ],
+          plugins: [require('../react-intl').default],
+        },
       );
-    `,
-      {
-        babelrc: false,
-        presets: [
-          require('@babel/preset-env').default,
-          require('@babel/preset-react').default,
-        ],
-        plugins: [require('../react-intl').default],
-      },
-    );
+    } catch (err) {
+      throw new Error(stripAnsi(err.message));
+    }
   }).toThrowErrorMatchingSnapshot();
 });

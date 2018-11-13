@@ -38,11 +38,11 @@ Array [
 exports[`correctly throw invalid intl message error 1`] = `
 "undefined: [React Intl] Message failed to parse. See: http://formatjs.io/guides/message-syntax/
 SyntaxError: Expected \\"=\\", \\"\\\\\\\\#\\", \\"\\\\\\\\\\\\\\\\\\", \\"\\\\\\\\u\\", \\"\\\\\\\\{\\", \\"\\\\\\\\}\\", \\"}\\" or [^{}\\\\\\\\\\\\0-\\\\x1F\\\\x7f \\\\t\\\\n\\\\r] but end of input found.
-[0m [90m  6 | [39m        [33m<[39m[33mFormattedMessage[39m[0m
-[0m [90m  7 | [39m          id[33m=[39m[32m\\"test.xyz\\"[39m[0m
-[0m[31m[1m>[22m[39m[90m  8 | [39m          defaultMessage[33m=[39m[32m\\"{xyz, select, y {test}\\"[39m[0m
-[0m [90m    | [39m                         [31m[1m^[22m[39m[0m
-[0m [90m  9 | [39m        [33m/[39m[33m>[39m[0m
-[0m [90m 10 | [39m      )[33m;[39m[0m
-[0m [90m 11 | [39m    [0m"
+   6 |           <FormattedMessage
+   7 |             id=\\"test.xyz\\"
+>  8 |             defaultMessage=\\"{xyz, select, y {test}\\"
+     |                            ^
+   9 |           />
+  10 |         );
+  11 |       "
 `;
