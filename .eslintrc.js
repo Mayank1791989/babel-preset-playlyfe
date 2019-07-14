@@ -12,5 +12,6 @@ module.exports = {
   },
   rules: {
     'arrow-parens': 'off',
+    'no-undefined': 'off',
   },
 };

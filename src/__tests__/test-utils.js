@@ -1,5 +1,5 @@
 /* @flow */
-import * as babel from 'babel-core';
+import * as babel from '@babel/core';
 import preset, { type Opts as PresetOpts } from '../index';
 
 type Opts = $Shape<PresetOpts>;
@@ -27,7 +27,7 @@ export function testParseCode(
       transform(testConfig.code, opts);
     };
     describe(title, () => {
-      it(`with opts = ${JSON.stringify(opts)}`, () => {
+      it(`with opts = ${JSON.stringify(opts || null)}`, () => {
         if (testConfig.throws) {
           expect(runTransform).toThrow();
         } else {
@@ -47,13 +47,11 @@ export function testExecCode(
 ) {
   testConfig.opts.forEach(opts => {
     describe(title, () => {
-      it(`with opts = ${JSON.stringify(opts)}`, () => {
+      it(`with opts = ${JSON.stringify(opts || null)}`, () => {
         // NOTE: here disabling babel runtime
         const transformed = transform(testConfig.code, {
           ...opts,
-          // NOTE: disabling runtime as we will exec code in sandboxed environment
-          // we cant use require|imports only sandbox variables present
-          babelRuntime: false,
+          babelRuntime: true,
         });
 
         // eslint-disable-next-line
@@ -63,6 +61,7 @@ export function testExecCode(
           returnValue(value) {
             fnCallReturnValue = value;
           },
+          require,
         };
         const fn = new Function( // eslint-disable-line no-new-func
           // $FlowIssue: valid code but flow throwing error

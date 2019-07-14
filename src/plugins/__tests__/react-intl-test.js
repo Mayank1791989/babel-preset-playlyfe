@@ -1,5 +1,5 @@
 /* @flow */
-import { transformFileSync, transform } from 'babel-core';
+import { transformFileSync, transform } from '@babel/core';
 import path from 'path';
 import stripAnsi from 'strip-ansi';
 
