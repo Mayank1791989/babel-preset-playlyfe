@@ -26,7 +26,6 @@ $ yarn add --dev babel-preset-playlyfe
 ## Options
 
 * `flow` - bool (default true) Enable flow support.
-* `dynamicImport` - boolean (default false) Allow dynamic imports.
 * `modules` - 'amd' | 'umd' | 'systemjs' | 'commonjs' | false (default 'commonjs').
 * `targets` - same as babel-preset-env [targets option](https://github.com/babel/babel-preset-env#options)
 * `useBuiltIns` - (default: true) same as babel-preset-env [useBuiltIns option](https://github.com/babel/babel-preset-env#options)

@@ -34,23 +34,20 @@
     "README.md"
   ],
   "dependencies": {
-    "@babel/plugin-proposal-class-properties": "7.2.3",
-    "@babel/plugin-proposal-object-rest-spread": "7.2.0",
-    "@babel/plugin-syntax-dynamic-import": "7.2.0",
-    "@babel/plugin-transform-runtime": "7.2.0",
-    "@babel/preset-env": "7.2.3",
+    "@babel/plugin-proposal-class-properties": "7.5.0",
+    "@babel/plugin-proposal-object-rest-spread": "7.5.4",
+    "@babel/plugin-transform-runtime": "7.5.0",
+    "@babel/preset-env": "7.5.4",
     "@babel/preset-flow": "7.0.0",
     "@babel/preset-react": "7.0.0",
-    "@babel/runtime": "7.2.0",
-    "babel-plugin-dynamic-import-node": "2.2.0",
+    "@babel/runtime": "7.5.4",
     "babel-plugin-react-intl": "3.0.1",
     "flow-runtime": "0.17.0",
-    "lodash": "4.17.11"
+    "lodash": "4.17.14"
   },
   "devDependencies": {
     "@babel/cli": "7.5.0",
     "@babel/core": "7.5.4",
-    "@babel/polyfill": "7.4.4",
     "babel-jest": "24.8.0",
     "babel-plugin-flow-runtime": "0.19.0",
     "codecov": "3.5.0",

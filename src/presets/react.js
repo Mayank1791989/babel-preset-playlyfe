@@ -2,11 +2,11 @@
 import presetReact from '@babel/preset-react';
 import pluginReactIntl from '../plugins/react-intl';
 
-export type Opts = {
+export type Opts = {|
   reactIntl: boolean,
   useBuiltIns: boolean,
   development: boolean,
-};
+|};
 
 export const DEFAULT_OPTS: Opts = Object.freeze({
   reactIntl: true,

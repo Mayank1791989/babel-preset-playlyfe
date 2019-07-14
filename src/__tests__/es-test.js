@@ -39,16 +39,16 @@ test('Transform class properties', () => {
     { modules: false },
   );
   expect(code).toMatchInlineSnapshot(`
-"import _classCallCheck from \\"@babel/runtime/helpers/esm/classCallCheck\\";
+    "import _classCallCheck from \\"@babel/runtime/helpers/esm/classCallCheck\\";
 
-var Test = function Test() {
-  _classCallCheck(this, Test);
+    var Test = function Test() {
+      _classCallCheck(this, Test);
 
-  this.y = 10;
-};
+      this.y = 10;
+    };
 
-Test.x = 5;"
-`);
+    Test.x = 5;"
+  `);
 });
 
 test('Use commonjs by default for modules', () => {
@@ -61,19 +61,19 @@ test('Use commonjs by default for modules', () => {
   `,
   );
   expect(code).toMatchInlineSnapshot(`
-"\\"use strict\\";
+    "\\"use strict\\";
 
-var _interopRequireDefault = require(\\"@babel/runtime/helpers/interopRequireDefault\\");
+    var _interopRequireDefault = require(\\"@babel/runtime/helpers/interopRequireDefault\\");
 
-var _classCallCheck2 = _interopRequireDefault(require(\\"@babel/runtime/helpers/classCallCheck\\"));
+    var _classCallCheck2 = _interopRequireDefault(require(\\"@babel/runtime/helpers/classCallCheck\\"));
 
-var Test = function Test() {
-  (0, _classCallCheck2.default)(this, Test);
-  this.y = 10;
-};
+    var Test = function Test() {
+      (0, _classCallCheck2[\\"default\\"])(this, Test);
+      this.y = 10;
+    };
 
-Test.x = 5;"
-`);
+    Test.x = 5;"
+  `);
 });
 
 testParseCode('Allow Object rest spread', {
@@ -100,16 +100,16 @@ test('correctly transform object-rest-spread', () => {
     const c = { ...a, ...b };
   `);
   expect(code).toMatchInlineSnapshot(`
-"\\"use strict\\";
+    "\\"use strict\\";
 
-var a = {
-  name: 'babel'
-};
-var b = {
-  core: 'core'
-};
-var c = Object.assign({}, a, b);"
-`);
+    var a = {
+      name: 'babel'
+    };
+    var b = {
+      core: 'core'
+    };
+    var c = Object.assign({}, a, {}, b);"
+  `);
 });
 
 testParseCode('Allow exports of form export { name } from module', {
@@ -160,12 +160,12 @@ test('[Bug] flow should strip whole import if it contains only types', () => {
   `);
 
   expect(transformed.code).toMatchInlineSnapshot(`
-"\\"use strict\\";
+    "\\"use strict\\";
 
-function test() {
-  console.log('test');
-}"
-`);
+    function test() {
+      console.log('test');
+    }"
+  `);
 });
 
 testParseCode('Support import shorthand', {
@@ -176,67 +176,55 @@ testParseCode('Support import shorthand', {
   `,
 });
 
-testParseCode('Support dynamic import if enabled', {
-  opts: [{ dynamicImport: 'webpack' }],
-  throws: false,
-  code: `
-    function someDynamicImport() {
-      import('xyz').then(() => console.log('dynamic import'));
-    }
-  `,
-});
+describe('Dynamic Imports', () => {
+  testParseCode('Parsing', {
+    opts: [undefined, { modules: false }],
+    throws: false,
+    code: `
+      function someDynamicImport() {
+        import('xyz').then(() => console.log('dynamic import'));
+      }
+    `,
+  });
 
-describe('Transform dynamic import', () => {
-  const code = `
-    function someDynamicImport() {
-      import('xyz').then(() => console.log('dynamic import'));
-    }
-  `;
+  describe('Transform dynamic import', () => {
+    const code = `
+      function someDynamicImport() {
+        import('xyz').then(() => console.log('dynamic import'));
+      }
+    `;
 
-  test('webpack', () => {
-    const transformed = transform(code, {
-      dynamicImport: 'webpack',
+    test('Skip transformation if modules: false (for webpack)', () => {
+      const transformed = transform(code, { modules: false });
+      expect(transformed.code).toMatchInlineSnapshot(`
+        "function someDynamicImport() {
+          import('xyz').then(function () {
+            return console.log('dynamic import');
+          });
+        }"
+      `);
     });
 
-    expect(transformed.code).toMatchInlineSnapshot(`
-"\\"use strict\\";
+    test('transform if modules enabled', () => {
+      const transformed = transform(code, { modules: 'commonjs' });
 
-function someDynamicImport() {
-  import('xyz').then(function () {
-    return console.log('dynamic import');
-  });
-}"
-`);
-  });
+      expect(transformed.code).toMatchInlineSnapshot(`
+        "\\"use strict\\";
 
-  test('node', () => {
-    const transformed = transform(code, {
-      dynamicImport: 'node',
-      modules: false,
+        var _interopRequireDefault = require(\\"@babel/runtime/helpers/interopRequireDefault\\");
+
+        var _interopRequireWildcard2 = _interopRequireDefault(require(\\"@babel/runtime/helpers/interopRequireWildcard\\"));
+
+        function someDynamicImport() {
+          Promise.resolve().then(function () {
+            return (0, _interopRequireWildcard2[\\"default\\"])(require('xyz'));
+          }).then(function () {
+            return console.log('dynamic import');
+          });
+        }"
+      `);
     });
-
-    expect(transformed.code).toMatchInlineSnapshot(`
-"import _interopRequireWildcard from \\"@babel/runtime/helpers/esm/interopRequireWildcard\\";
-
-function someDynamicImport() {
-  Promise.resolve().then(function () {
-    return _interopRequireWildcard(require('xyz'));
-  }).then(function () {
-    return console.log('dynamic import');
   });
-}"
-`);
-  });
-});
-
-testParseCode('By default dont support dynamic import', {
-  opts: [null],
-  throws: true,
-  code: `
-    function someDynamicImport() {
-      import('xyz').then(() => console.log('dynamic import'));
-    }
-  `,
 });
 
 test('Support disable import conversion', () => {
@@ -246,9 +234,9 @@ test('Support disable import conversion', () => {
   `;
   const transformed = transform(code, { modules: false });
   expect(transformed.code).toMatchInlineSnapshot(`
-"import { test } from 'test';
-console.log('test');"
-`);
+    "import { test } from 'test';
+    console.log('test');"
+  `);
 });
 
 // supports async await
@@ -260,12 +248,12 @@ test('default dont transform transform async await', () => {
   `);
 
   expect(transformed.code).toMatchInlineSnapshot(`
-"\\"use strict\\";
+    "\\"use strict\\";
 
-async function test() {
-  var a = await test2();
-}"
-`);
+    async function test() {
+      var a = await test2();
+    }"
+  `);
 });
 
 test('transform if Async await enabled', () => {
@@ -304,10 +292,10 @@ testExecCode('async await should work', {
   `,
 });
 
-test('Correctly replace @babel/polyfill with individual import for target', () => {
+test('Correctly replace core-js with individual import for target', () => {
   const { code } = transform(
     `
-    import '@babel/polyfill';
+    import 'core-js/stable';
   `,
     { modules: false },
   );

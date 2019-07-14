@@ -4,8 +4,11 @@ import preset, { type Opts as PresetOpts } from '../index';
 
 type Opts = $Shape<PresetOpts>;
 
-export function transform(code: string, presetOpts: ?Opts) {
-  return babel.transform(code, {
+export function transform(
+  code: string,
+  presetOpts: ?Opts,
+): { code: string, metadata: { +[string]: mixed } } {
+  return babel.transformSync(code, {
     presets: [[preset, presetOpts]], // eslint-disable-line global-require
     // required for transformation
     filename: '/test-file.js',
