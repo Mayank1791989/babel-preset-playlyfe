@@ -1,5 +1,6 @@
 /* @flow */
 import { testParseCode, transform } from './test-utils';
+import stripAnsi from 'strip-ansi';
 
 testParseCode('react jsx', {
   opts: [undefined, { react: true }],
@@ -79,6 +80,8 @@ var test = function test() {
 
 describe('support react-intl', () => {
   const code = `
+    import { FormattedMessage } from 'react-intl';
+
     const component = () => {
       <div>
         <FormattedMessage id="some_id" defaultMessage="Some message" />
@@ -94,5 +97,64 @@ describe('support react-intl', () => {
   it('should not include react-intl in metadata if disabled', () => {
     const result = transform(code, { reactIntl: false });
     expect(result.metadata['react-intl']).not.toBeDefined();
+  });
+
+  describe('should able to extract messages', () => {
+    it('<FormattedMessage />', () => {
+      const result = transform(code);
+      expect(result.metadata['react-intl']).toEqual({
+        messages: [
+          {
+            id: 'some_id',
+            description: undefined,
+            defaultMessage: 'Some message',
+          },
+        ],
+      });
+    });
+
+    test('intl.formatMessage', () => {
+      const result = transform(`
+      const component = () => {
+        return (
+          <div>
+            {this.props.intl.formatMessage({
+              id: "some_id",
+              defaultMessage: "Some message",
+            })}
+          </div>
+        );
+      }
+    `);
+      expect(result.metadata['react-intl']).toEqual({
+        messages: [
+          {
+            id: 'some_id',
+            description: undefined,
+            defaultMessage: 'Some message',
+          },
+        ],
+      });
+    });
+  });
+
+  test('correctly throw invalid intl message error', () => {
+    expect(() => {
+      try {
+        transform(`
+          import React from 'react';
+          import { FormattedMessage } from 'react-intl';
+
+          const Component = (
+            <FormattedMessage
+              id="test.xyz"
+              defaultMessage="{xyz, select, y {test}"
+            />
+          );
+        `);
+      } catch (err) {
+        throw new Error(stripAnsi(err.message));
+      }
+    }).toThrowErrorMatchingSnapshot();
   });
 });

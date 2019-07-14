@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`support react-intl correctly throw invalid intl message error 1`] = `
+"/test-file.js: [React Intl] Message failed to parse. See: http://formatjs.io/guides/message-syntax/
+SyntaxError: Expected \\"'\\", \\"\\\\\\\\#\\", \\"\\\\\\\\\\\\\\\\\\", \\"\\\\\\\\u\\", \\"\\\\\\\\{\\", \\"\\\\\\\\}\\", \\"}\\", or [^{,},\\\\\\\\,\\\\0-\\\\x1F,\\\\x7F, ,\\\\t,\\\\n,\\\\r] but end of input found.
+   6 |             <FormattedMessage
+   7 |               id=\\"test.xyz\\"
+>  8 |               defaultMessage=\\"{xyz, select, y {test}\\"
+     |                              ^
+   9 |             />
+  10 |           );
+  11 |         "
+`;

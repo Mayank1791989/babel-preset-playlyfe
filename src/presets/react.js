@@ -1,6 +1,6 @@
 /* @flow */
 import presetReact from '@babel/preset-react';
-import pluginReactIntl from '../plugins/react-intl';
+import pluginReactIntl from 'babel-plugin-react-intl';
 
 export type Opts = {|
   reactIntl: boolean,
@@ -27,6 +27,11 @@ export default (context: any, opts: Opts) => ({
 
   plugins: [
     // react-intl support
-    opts.reactIntl ? [pluginReactIntl, { enforceDescriptions: false }] : null,
+    opts.reactIntl
+      ? [
+          pluginReactIntl,
+          { enforceDescriptions: false, extractFromFormatMessageCall: true },
+        ]
+      : null,
   ].filter(Boolean),
 });

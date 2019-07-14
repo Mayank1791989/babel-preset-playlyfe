@@ -41,7 +41,7 @@
     "@babel/preset-flow": "7.0.0",
     "@babel/preset-react": "7.0.0",
     "@babel/runtime": "7.5.4",
-    "babel-plugin-react-intl": "3.0.1",
+    "babel-plugin-react-intl": "4.1.0",
     "flow-runtime": "0.17.0",
     "lodash": "4.17.14"
   },
