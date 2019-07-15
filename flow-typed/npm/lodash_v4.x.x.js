@@ -1,5 +1,5 @@
-// flow-typed signature: 8b15b6ecab988d6153afcfcf2876bbed
-// flow-typed version: 07f4c5ae3d/lodash_v4.x.x/flow_>=v0.63.x
+// flow-typed signature: d36b95474e80ff13f304d9c62feea376
+// flow-typed version: 3bf8713118/lodash_v4.x.x/flow_>=v0.63.x
 
 declare module "lodash" {
   declare type Path = $ReadOnlyArray<string | number> | string | number;
@@ -147,6 +147,11 @@ declare module "lodash" {
     length?: number,
     omission?: string,
     separator?: RegExp | string
+  };
+
+  declare type Cancelable = {
+    cancel: () => void,
+    flush: () => mixed
   };
 
   declare type DebounceOptions = {
@@ -785,7 +790,11 @@ declare module "lodash" {
     curry: Curry;
     curry(func: Function, arity?: number): Function;
     curryRight(func: Function, arity?: number): Function;
-    debounce<F: (...any[]) => any>(func: F, wait?: number, options?: DebounceOptions): F;
+    debounce<F: (...any[]) => any>(
+      func: F,
+      wait?: number,
+      options?: DebounceOptions
+    ): F & Cancelable;
     defer(func: (...any[]) => any, ...args?: Array<any>): TimeoutID;
     delay(func: Function, wait: number, ...args?: Array<any>): TimeoutID;
     flip<R>(func: (...any[]) => R): (...any[]) => R;
@@ -805,7 +814,7 @@ declare module "lodash" {
       func: F,
       wait?: number,
       options?: ThrottleOptions
-    ): F;
+    ): F & Cancelable;
     unary<F: (...any[]) => any>(func: F): F;
     wrap(value?: any, wrapper?: ?Function): Function;
 
