@@ -25,8 +25,7 @@
     "flow-typed-update": "rm -rf flow-typed/npm && flow-typed update",
     "lint": "eslint src",
     "build": "rm -rf lib && babel ./src --out-dir ./lib --ignore '**/__tests__/**,**/node_modules/**'",
-    "semantic-release": "semantic-release",
-    "commit": "git-cz"
+    "semantic-release": "semantic-release"
   },
   "homepage": "https://github.com/Mayank1791989/babel-preset-playlyfe#readme",
   "files": [
@@ -51,9 +50,7 @@
     "babel-jest": "24.8.0",
     "babel-plugin-flow-runtime": "0.19.0",
     "codecov": "3.5.0",
-    "commitizen": "3.1.1",
     "cross-env": "5.2.0",
-    "cz-conventional-changelog": "2.1.0",
     "eslint": "5.16.0",
     "eslint-plugin-playlyfe": "6.4.0",
     "flow-bin": "0.104.0",
@@ -63,11 +60,6 @@
     "prettier": "1.18.2",
     "semantic-release": "15.13.19",
     "strip-ansi": "5.2.0"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   },
   "jest": {
     "testRegex": "__tests__/.*-test.js$",
