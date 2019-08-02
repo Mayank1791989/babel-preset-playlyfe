@@ -25,7 +25,7 @@ export function testParseCode(
     throws: boolean,
   |},
 ) {
-  testConfig.opts.forEach(opts => {
+  testConfig.opts.forEach((opts) => {
     const runTransform = () => {
       transform(testConfig.code, opts);
     };
@@ -48,7 +48,7 @@ export function testExecCode(
     code: string,
   |},
 ) {
-  testConfig.opts.forEach(opts => {
+  testConfig.opts.forEach((opts) => {
     describe(title, () => {
       it(`with opts = ${JSON.stringify(opts || null)}`, () => {
         // NOTE: here disabling babel runtime

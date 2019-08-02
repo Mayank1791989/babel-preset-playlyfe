@@ -44,12 +44,12 @@ test('should not include react source and self by default', () => {
   const transformed = transform(code, { react: true });
 
   expect(transformed.code).toMatchInlineSnapshot(`
-"\\"use strict\\";
+    "\\"use strict\\";
 
-var test = function test() {
-  return React.createElement(\\"div\\", null);
-};"
-`);
+    var test = function test() {
+      return React.createElement(\\"div\\", null);
+    };"
+  `);
 });
 
 test('include react source and self if development mode is on', () => {
@@ -62,20 +62,20 @@ test('include react source and self if development mode is on', () => {
   const transformed = transform(code, { react: true, development: true });
 
   expect(transformed.code).toMatchInlineSnapshot(`
-"\\"use strict\\";
+    "\\"use strict\\";
 
-var _jsxFileName = \\"/test-file.js\\";
+    var _jsxFileName = \\"/test-file.js\\";
 
-var test = function test() {
-  return React.createElement(\\"div\\", {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 3
-    },
-    __self: this
-  });
-};"
-`);
+    var test = function test() {
+      return React.createElement(\\"div\\", {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 3
+        },
+        __self: this
+      });
+    };"
+  `);
 });
 
 describe('support react-intl', () => {
@@ -115,17 +115,17 @@ describe('support react-intl', () => {
 
     test('intl.formatMessage', () => {
       const result = transform(`
-      const component = () => {
-        return (
-          <div>
-            {this.props.intl.formatMessage({
-              id: "some_id",
-              defaultMessage: "Some message",
-            })}
-          </div>
-        );
-      }
-    `);
+        const component = () => {
+          return (
+            <div>
+              {this.props.intl.formatMessage({
+                id: "some_id",
+                defaultMessage: "Some message",
+              })}
+            </div>
+          );
+        }
+      `);
       expect(result.metadata['react-intl']).toEqual({
         messages: [
           {

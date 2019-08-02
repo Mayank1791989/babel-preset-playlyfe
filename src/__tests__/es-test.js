@@ -31,11 +31,11 @@ testParseCode('Allow class properties', {
 test('Transform class properties', () => {
   const { code } = transform(
     `
-    class Test {
-      static x = 5;
-      y = 10;
-    }
-  `,
+      class Test {
+        static x = 5;
+        y = 10;
+      }
+    `,
     { modules: false },
   );
   expect(code).toMatchInlineSnapshot(`
@@ -54,11 +54,11 @@ test('Transform class properties', () => {
 test('Use commonjs by default for modules', () => {
   const { code } = transform(
     `
-    class Test {
-      static x = 5;
-      y = 10;
-    }
-  `,
+      class Test {
+        static x = 5;
+        y = 10;
+      }
+    `,
   );
   expect(code).toMatchInlineSnapshot(`
     "\\"use strict\\";
@@ -259,10 +259,10 @@ test('default dont transform transform async await', () => {
 test('transform if Async await enabled', () => {
   const transformed = transform(
     `
-    async function test() {
-      const a = await test2();
-    }
-  `,
+      async function test() {
+        const a = await test2();
+      }
+    `,
     { asyncAwait: true, modules: false },
   );
 
@@ -295,8 +295,8 @@ testExecCode('async await should work', {
 test('Correctly replace core-js with individual import for target', () => {
   const { code } = transform(
     `
-    import 'core-js/stable';
-  `,
+      import 'core-js/stable';
+    `,
     { modules: false },
   );
 
