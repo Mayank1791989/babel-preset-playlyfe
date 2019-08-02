@@ -46,8 +46,8 @@
     "lodash": "4.17.14"
   },
   "devDependencies": {
-    "@babel/cli": "7.5.0",
-    "@babel/core": "7.5.4",
+    "@babel/cli": "7.5.5",
+    "@babel/core": "7.5.5",
     "babel-jest": "24.8.0",
     "babel-plugin-flow-runtime": "0.19.0",
     "codecov": "3.5.0",
@@ -56,13 +56,12 @@
     "cz-conventional-changelog": "2.1.0",
     "eslint": "5.16.0",
     "eslint-plugin-playlyfe": "6.4.0",
-    "flow-bin": "0.102.0",
-    "flow-typed": "2.5.2",
-    "husky": "3.0.0",
+    "flow-bin": "0.104.0",
+    "husky": "3.0.2",
     "jest": "24.8.0",
     "jest-watch-typeahead": "0.3.1",
     "prettier": "1.18.2",
-    "semantic-release": "15.13.18",
+    "semantic-release": "15.13.19",
     "strip-ansi": "5.2.0"
   },
   "config": {
