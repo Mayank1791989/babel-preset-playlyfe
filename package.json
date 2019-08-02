@@ -42,7 +42,7 @@
     "@babel/runtime": "7.5.4",
     "babel-plugin-react-intl": "3.5.1",
     "flow-runtime": "0.17.0",
-    "lodash": "4.17.14"
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@babel/cli": "7.5.5",
